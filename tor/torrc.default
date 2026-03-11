@@ -1,11 +1,41 @@
-SocksPort 0.0.0.0:9050
-
-#SocksPolicy accept 192.168.0.0/16
-#SocksPolicy reject *
-
-Log notice syslog
-
+# Network configuration
+SOCKSPort 0.0.0.0:9050
+SocksPolicy accept 127.0.0.1/32
+SocksPolicy accept 10.0.0.0/8
+SocksPolicy accept 172.16.0.0/12
+SocksPolicy accept 192.168.0.0/16
+SocksPolicy reject *
 DataDirectory /var/lib/tor
 
-#HiddenServiceDir /var/lib/tor/hidden_service/
-#HiddenServicePort 80 127.0.0.1:80
+# Client-only configuration - explicitly disable all server ports
+ClientOnly 1
+ORPort 0
+DirPort 0
+ControlPort 0
+ExitPolicy reject *:*
+ExitRelay 0
+BridgeRelay 0
+
+# Bootstrap and connection settings
+DownloadExtraInfo 1
+FetchDirInfoEarly 1
+FetchDirInfoExtraEarly 1
+FetchHidServDescriptors 1
+UseMicrodescriptors 1
+
+# Connection timeout settings
+CircuitBuildTimeout 60
+LearnCircuitBuildTimeout 0
+
+# Logging
+Log notice stdout
+SafeLogging 1
+
+# Performance
+AvoidDiskWrites 0
+NumEntryGuards 8
+
+# For faster bootstrap (optional - uncomment if needed)
+# DisableNetwork 0
+# FascistFirewall 1
+# FirewallPorts 80,443

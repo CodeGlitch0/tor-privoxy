@@ -1,12 +1,37 @@
-version: '3'
-
 services:
   tor:
     build: ./tor/
+    container_name: tor
     ports:
       - "127.0.0.1:9050:9050"
+    volumes:
+      - tor-data:/var/lib/tor
+    networks:
+      - tor-network
+    restart: no
+    healthcheck:
+      test: ["CMD", "curl", "--fail", "--socks5-hostname", "localhost:9050", "https://check.torproject.org/", "-o", "/dev/null", "-s"]
+      interval: 60s
+      timeout: 10s
+      retries: 3
+      start_period: 30s
+      
   privoxy:
     build: ./privoxy/
+    container_name: privoxy
     ports:
       - "127.0.0.1:8118:8118"
+    networks:
+      - tor-network
+    depends_on:
+      - tor
+    restart: no
+
+volumes:
+  tor-data:
+    driver: local
+
+networks:
+  tor-network:
+    driver: bridge
 

@@ -4,7 +4,12 @@ RUN apk add --update --no-cache tor
 
 COPY torrc.default /etc/tor/torrc.default
 
-RUN chown -R tor /etc/tor
+# Create data directory for Tor
+RUN mkdir -p /var/lib/tor && \
+    chown -R tor:tor /var/lib/tor && \
+    chown -R tor:tor /etc/tor
+
+VOLUME ["/var/lib/tor"]
 
 USER tor
 EXPOSE 9050
