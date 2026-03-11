@@ -23,6 +23,10 @@ FetchDirInfoExtraEarly 1
 FetchHidServDescriptors 1
 UseMicrodescriptors 1
 
+# Lock exit node to a specific country
+# ExitNodes {IS}  # {US},{CA},{GB}
+# StrictNodes 1
+
 # Connection timeout settings
 CircuitBuildTimeout 60
 LearnCircuitBuildTimeout 0
